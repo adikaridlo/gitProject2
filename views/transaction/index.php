@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach($models as $item):?>
             <?php 
                 if ($item['type'] == "c") {
-                    $type = "Kridit";
+                    $type = "Kredit";
                 }elseif ($item['type'] == "d") {
                     $type = "Debit";
                 }

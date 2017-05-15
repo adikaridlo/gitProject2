@@ -45,10 +45,12 @@ class TransactionController extends Controller
             // Jalankan Filter.....
             $transDate = Html::encode($model->transdate);
             $toDate = Html::encode($model->todate);
-            // 
+            $ID = Html::encode($model->customer);
+            echo $ID;
             $query = Transaction::find()
                     ->joinWith('customer')
-                    ->where(['between','trans_date',$transDate,$toDate]);
+                    ->andWhere(['transaction.customer_id' => number_format($ID)])
+                    ->andwhere(['between','trans_date',$transDate,$toDate]);
             $countQuery = clone $query;
             $pages = new Pagination([
                 'defaultPageSize' => 3,

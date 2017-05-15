@@ -35,7 +35,7 @@ use dosamigos\datepicker\DatePicker;
         [
             'prompt'=>'Select Country',
             'onchange'=>'
-                $.post( "http://tugas2.com/city/lists?id='.'"+$(this).val(), function( data ){
+                $.post( "http://filter.com/city/lists?id='.'"+$(this).val(), function( data ){
                     $( "select#customer-city" ).html(data);
                 });'
         ]);?>
