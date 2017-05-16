@@ -42,9 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ) ?>
             <!-- Filter Name -->
-    <?= $form->field($transaksiForm, 'customer')
-        ->textInput()->input('customer', ['placeholder' => "Nama"] )
-    ?>
+    <?= $form->field($transaksiForm, 'customer')->dropDownList(
+        ArrayHelper::map(Customer::find()->all(),'id','name'),
+        ['prompt'=>'Pilih Nama Cus']
+
+    ) ?>
             <div class="form-group">
             <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light']) ?>
             </div>
