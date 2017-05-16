@@ -77,7 +77,7 @@ class CustomerController extends Controller
                 ->limit($pages->limit)
                 ->all();
             $CustomerForm = new CustomerForm();
-            return $this->render('tampilkan',[
+            return $this->render('index',[
                 'models' => $models,
                  'pages' => $pages,
                 'models'=> $models,
@@ -97,7 +97,7 @@ class CustomerController extends Controller
                 ->limit($pages->limit)
                 ->all();
             $CustomerForm = new CustomerForm();
-            return $this->render('tampilkan', [
+            return $this->render('index', [
                  'models' => $models,
                  'pages' => $pages,
                  'CustomerForm' => $CustomerForm,

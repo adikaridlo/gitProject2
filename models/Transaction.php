@@ -57,7 +57,7 @@ class Transaction extends \yii\db\ActiveRecord
             'type' => 'Type',
             'amount' => 'Amount',
             'currency' => 'Currency',
-            'trans_date' => 'From Transaction Date',
+            'trans_date' => 'Transaction Date',
         ];
     }
 

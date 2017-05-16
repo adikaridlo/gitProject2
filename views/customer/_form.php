@@ -30,17 +30,17 @@ use dosamigos\datepicker\DatePicker;
 
     
 <!-- TEST -->
- <?= $form->field($model, 'country')->dropDownList(
+ <?= $form->field($model, 'country_id')->dropDownList(
         ArrayHelper::map(Country::find()->all(), 'id','name'),
         [
             'prompt'=>'Select Country',
             'onchange'=>'
                 $.post( "http://filter.com/city/lists?id='.'"+$(this).val(), function( data ){
-                    $( "select#customer-city" ).html(data);
+                    $( "select#customer-city_id" ).html(data);
                 });'
         ]);?>
 
-<?= $form->field($model, 'city')->dropDownList(
+<?= $form->field($model, 'city_id')->dropDownList(
         ArrayHelper::map(City::find()->all(), 'id','name'),
         [
             'prompt'=>'Select City',

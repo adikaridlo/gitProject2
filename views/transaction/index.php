@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- Filter Name -->
 <?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
             'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
-            'options' => ['prompt' => 'Select a state ...'],
+            'options' => ['prompt' => 'Select a name ...'],
             'pluginOptions' => [
                 'allowClear' => true
             ],
@@ -59,13 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="table-responsive">
 <?= Html::a('Tambah Data', array('transaction/create', 'class' => 'btn btn-primary waves-effect waves-light'))?>
 <table class="table table-bordered table-striped">
-        <tr>
-            <th>Nomor Jurnal</th>
-            <th>Customer Name</th>
-            <th>Nama Transaksi</th>
-            <th>Tipe Pembayaran</th>
-            <th>Sejumlah</th>
-            <th>Tanggal Transaksi</th>
+        <tr><th>Nomor Jurnal</th><th>Customer Name</th><th>Nama Transaksi</th><th>Tipe Pembayaran</th><th>Sejumlah</th><th>Tanggal Transaksi</th>
         </tr>
         <?php foreach($models as $item):?>
             <?php 

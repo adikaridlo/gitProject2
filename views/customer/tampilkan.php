@@ -21,7 +21,7 @@ use kartik\select2\Select2;
 $this->title = 'Transactions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Tabel Transaksi</h1>
+<h1>Table Customer</h1>
 
 <div class="col-md-4">
 <?php $form = ActiveForm::begin(['action' =>Url::to(['customer/index']), 'id' => 'forum_post', 'method' => 'post',]); ?>
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- Filter Nama -->
     <?= $form->field($CustomerForm, 'nama')->widget(Select2::classname(), [
 		    'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
-		    'options' => ['prompt' => 'Select a state ...'],
+		    'options' => ['prompt' => 'Select a name ...'],
 		    'pluginOptions' => [
 		        'allowClear' => true
 		    ],
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="table-responsive">
-<?= Html::a('Tambah Data', array('transaction/create', 'class' => 'btn btn-primary waves-effect waves-light'))?>
+<?= Html::a('Tambah Data Customer', array('customer/create', 'class' => 'btn btn-primary waves-effect waves-light'))?>
 <table class="table table-bordered table-striped">
         <tr>
             <th>Nama</th>
