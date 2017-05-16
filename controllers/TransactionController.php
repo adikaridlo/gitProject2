@@ -49,8 +49,9 @@ class TransactionController extends Controller
             echo $ID;
             $query = Transaction::find()
                     ->joinWith('customer')
-                    ->andWhere(['transaction.customer_id' => number_format($ID)])
-                    ->andwhere(['between','trans_date',$transDate,$toDate]);
+                    ->Where(['LIKE','customer.name', $ID])
+                    ->andwhere(['between','trans_date',$transDate,$toDate])
+                    ->orderBy(['transaction.id' => SORT_ASC]);
             $countQuery = clone $query;
             $pages = new Pagination([
                 'defaultPageSize' => 3,
@@ -71,7 +72,7 @@ class TransactionController extends Controller
                 ->joinWith('customer');
             $countQuery = clone $query;
             $pages = new Pagination([
-                'defaultPageSize' =>2,
+                'defaultPageSize' =>3,
                 'totalCount' => $countQuery->count()]);
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
