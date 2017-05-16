@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Transaction;
 use app\models\Customer;
 use dosamigos\datepicker\DatePicker;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TransactionSearch */
@@ -41,12 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ]
             ) ?>
-            <!-- Filter Name -->
-    <?= $form->field($transaksiForm, 'customer')->dropDownList(
-        ArrayHelper::map(Customer::find()->all(),'id','name'),
-        ['prompt'=>'Pilih Nama Cus']
-
-    ) ?>
+<!-- Filter Name -->
+<?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
+            'options' => ['prompt' => 'Select a state ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);?>
             <div class="form-group">
             <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light']) ?>
             </div>

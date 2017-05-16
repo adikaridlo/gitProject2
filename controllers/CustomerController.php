@@ -4,11 +4,14 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Customer;
+use app\models\CustomerForm;
 use app\models\CustomerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use kartik\depdrop\DepDrop;
+use yii\data\Pagination;
+use yii\helpers\Html;
 
 
 /**
@@ -37,15 +40,71 @@ class CustomerController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination = [
-            'pageSize' => 2
-        ];
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        // $searchModel = new CustomerSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $dataProvider->pagination = [
+        //     'pageSize' => 2
+        // ];
+        // return $this->render('index', [
+        //     'searchModel' => $searchModel,
+        //     'dataProvider' => $dataProvider,
+        // ]);
+
+        $model = new CustomerForm();
+        if($model->load(yii::$app->request->post()) && $model->validate()){
+            // Jalankan Filter.....
+            $nama = Html::encode($model->nama);
+            $negara = Html::encode($model->negara);
+            $kota = Html::encode($model->kota);
+            echo $nama;
+            echo $negara;
+            echo $kota;
+
+            // Filter .............
+
+            $query = Customer::find()
+                    ->joinWith('country')
+                    ->joinWith('city')
+                    ->Where(['customer.id' => $nama])
+                    ->andwhere(['customer.country_id' => $negara])
+                    ->andwhere(['customer.city_id' => $kota])
+                    ->orderBy(['customer.id' => SORT_ASC]);
+            $countQuery = clone $query;
+            $pages = new Pagination([
+                'defaultPageSize' => 3,
+                'totalCount' => $countQuery->count()]);
+            $models = $query->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();
+            $CustomerForm = new CustomerForm();
+            return $this->render('tampilkan',[
+                'models' => $models,
+                 'pages' => $pages,
+                'models'=> $models,
+                'CustomerForm' => $CustomerForm,
+                ]);
+            
+        }else{
+            // Mentahan...
+            $query = Customer::find()
+                ->joinWith('country')
+                ->joinWith('city');
+            $countQuery = clone $query;
+            $pages = new Pagination([
+                'defaultPageSize' =>3,
+                'totalCount' => $countQuery->count()]);
+            $models = $query->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();
+            $CustomerForm = new CustomerForm();
+            return $this->render('tampilkan', [
+                 'models' => $models,
+                 'pages' => $pages,
+                 'CustomerForm' => $CustomerForm,
+            ]);
+        }
+
+
 
     }
 
