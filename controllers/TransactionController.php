@@ -70,14 +70,19 @@ class TransactionController extends Controller
             // Mentahan...
             $query = Transaction::find()
                 ->joinWith('customer');
+
             $countQuery = clone $query;
+
             $pages = new Pagination([
                 'defaultPageSize' =>3,
                 'totalCount' => $countQuery->count()]);
+
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
+                
             $transaksiForm = new TransaksiForm();
+
             return $this->render('index', [
                  'models' => $models,
                  'pages' => $pages,
