@@ -7,10 +7,11 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
+        'myComponent' => ['class' => '\common\MyClass'],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'hx214IBoiqrfXVRFyrkWYzcj0y1DmCIr',
-            'parsers' => ['application/json'=>'yii\web\JsonParser']
+            'parsers' => ['application/json'=>'yii\web\JsonParser'],
         ],
 
         'cache' => [
@@ -22,14 +23,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                // [
-                //     'class' => 'yii\rest\UrlRule',
-                //     'controller' => ['service'],
-                //     'tokens' => 
-                //         [
-                //             '{id}' => '<id:\\w+>'
-                //         ]
-                // ]
             ]
         ],
 
@@ -44,10 +37,15 @@ $config = [
 
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'webs.art.info@gmail.com',
+                'password' => 'adikaenjoy161092',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
         ],
 
         'log' => [

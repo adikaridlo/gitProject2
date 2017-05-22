@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $item->customer->name?></td>
             <td><?= $item['trans_name']?></td>
             <td><?= $type?></td>
-            <td><?= $item['currency']." ".$item['amount']?></td>
+            <td class="text-right"><?= $item['currency']." ".$item['amount']?></td>
             <td><?= $item['trans_date']?></td>
             <!--  -->
         </tr>

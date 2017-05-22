@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Alamat</th>
             <th>Negara</th>
             <th>Kota</th>
+            <th>Status</th>
         </tr>
         <?php foreach($models as $item):?>
         <tr>
@@ -75,6 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $item->address?></td>
             <td><?= $item->country->name?></td>
             <td><?= $item->city->name?></td>
+            <td><?= $item->status?></td>
             <!--  -->
         </tr>
     <?php endforeach;?>

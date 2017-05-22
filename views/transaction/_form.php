@@ -4,7 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use dosamigos\datepicker\DatePicker;
 use yii\helpers\ArrayHelper;
-use app\models\Customer; 
+use app\models\Customer;
+use app\models\Services;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Transaction */
@@ -12,8 +14,7 @@ use app\models\Customer;
 ?>
 
 <div class="transaction-form">
-
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['action' => ['services/insert'],'method' => 'post',]); ?>
     <div class="col-md-6">
     <?= $form->field($model, 'jurnal_no')->textInput()->input('jurnal_no', ['placeholder' => "Nomor Journal"] )?>
     </div>

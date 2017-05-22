@@ -68,6 +68,7 @@ class CustomerController extends Controller
                     ->Where(['customer.id' => $nama])
                     ->andwhere(['customer.country_id' => $negara])
                     ->andwhere(['customer.city_id' => $kota])
+                    ->andwhere(['status' => 'YES'])
                     ->orderBy(['customer.id' => SORT_ASC]);
             $countQuery = clone $query;
             $pages = new Pagination([
@@ -88,7 +89,8 @@ class CustomerController extends Controller
             // Mentahan...
             $query = Customer::find()
                 ->joinWith('country')
-                ->joinWith('city');
+                ->joinWith('city')
+                ->where(['status' => 'YES']);
             $countQuery = clone $query;
             $pages = new Pagination([
                 'defaultPageSize' =>3,
@@ -125,17 +127,50 @@ class CustomerController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
     public function actionCreate()
     {
         $model = new Customer();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->status = "NO";
+            $model->save();
+            $data = $model->load(Yii::$app->request->post());
+            $idCustom = Customer::find()->orderBy(['id'=>SORT_DESC])->one();
+            $fromEmail = "webs.art.info@gmail.com";
+            $isiEmail = "<p>Terimakasih telah bergabung bersama Web A.R.T ! Untuk mengaktifkan akun anda, silahkan klik yang ada dibawah ini:</p><p><a href='http://filter.com/customer/validation?id=".$idCustom->id."'>Aktifkan</a></p>" ;
+            
+             Yii::$app->mailer->compose()
+                -> setFrom('web.art.info@gmail.com')
+                -> setTo($model->email)
+                -> setSubject("Activation".date("Y-m-d H:i:s"))
+                -> setHtmlBody($isiEmail)
+                -> send();
+               
+                 return $this->redirect(['view', 'id' => $model->id]);
+        }else{
             return $this->render('create', [
-                'model' => $model,
-            ]);
+                    'model' => $model,
+                ]);
         }
+
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // } else {
+        //     return $this->render('create', [
+        //         'model' => $model,
+        //     ]);
+        // }
+        
+    }
+    public function actionValidation($id){
+
+        $model = $this->findModel($id);
+
+        $status = Customer::findOne($id);
+        $status->status = "YES";
+        $status->save();
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**
