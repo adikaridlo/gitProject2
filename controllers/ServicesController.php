@@ -19,7 +19,6 @@ class ServicesController extends Controller
 	            	'actions' => [
 		            	'insert' => ['POST'],
 		            	'update' => ['PUT'],
-		            	'before' => ['GET'],
 	            		],
             	],
 
@@ -102,5 +101,6 @@ class ServicesController extends Controller
 		   return array('status'=> false, 'data'=>$ubah->getErrors());
 		  }
     }
+
 }
 ?>

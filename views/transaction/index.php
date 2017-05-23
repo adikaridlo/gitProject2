@@ -19,9 +19,13 @@ use kartik\select2\Select2;
 $this->title = 'Transactions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<h1>Tabel Transaksi</h1>
+<div class="col-md-12">
+    <?= Html::a(' PRINT DATA', ['excel'], ['class' => 'btn btn-success glyphicon glyphicon-print'])?>
+    <?= Html::a('',['create'], ['class' => 'btn btn-success glyphicon glyphicon-plus'])?>
+</div>
 
 <div class="col-md-4">
+<h1>Tabel Transaksi</h1>
 <?php $form = ActiveForm::begin(['action' =>Url::to(['transaction/index']), 'id' => 'forum_post', 'method' => 'post',]); ?>
     <?= $form->field($transaksiForm, 'transdate')->widget(
                 DatePicker::className(),[
@@ -56,10 +60,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php ActiveForm::end(); ?>
 </div>
 
+<div class="col-md-12">
 <div class="table-responsive">
-<?= Html::a('Tambah Data', array('transaction/create', 'class' => 'btn btn-primary waves-effect waves-light'))?>
+
+<?php echo Html::beginForm(array('transaction/excel')); ?>
+
 <table class="table table-bordered table-striped">
-        <tr><th>Nomor Jurnal</th><th>Customer Name</th><th>Nama Transaksi</th><th>Tipe Pembayaran</th><th>Sejumlah</th><th>Tanggal Transaksi</th>
+        <tr>
+        <th>Nomor Jurnal</th>
+        <th>Customer Name</th>
+        <th>Nama Transaksi</th>
+        <th>Tipe Pembayaran</th>
+        <th>Sejumlah</th>
+        <th>Tanggal Transaksi</th>
+        <th>Cetak</th>
         </tr>
         <?php foreach($models as $item):?>
             <?php 
@@ -76,11 +90,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $type?></td>
             <td class="text-right"><?= $item['currency']." ".$item['amount']?></td>
             <td><?= $item['trans_date']?></td>
+            <td class="text-center"><?=  Html::a('',['cetak', 'id' => $item['id']], ['class' => 'glyphicon glyphicon-download-alt'])?></td>
             <!--  -->
         </tr>
     <?php endforeach;?>
     </table>
+
+<?php echo Html::endForm(); ?>
 <?php echo LinkPager::widget([
     'pagination' => $pages,
 ]);?>
+</div>
 </div>

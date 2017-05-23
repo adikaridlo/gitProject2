@@ -18,9 +18,10 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "phpoffice/phpexcel": "*",
         "2amigos/yii2-date-picker-widget": "*",
         "conquer/select2": "*",
-        "kartik-v/yii2-widget-select2": "@dev",
+        "kartik-v/yii2-widget-select2": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -54,7 +55,7 @@
         },
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower",
+            "bower-asset-library": "vendor/bower"
         }
     }
 }
