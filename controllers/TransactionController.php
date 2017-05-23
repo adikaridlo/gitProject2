@@ -266,7 +266,7 @@ class TransactionController extends Controller
                 }
                         
         header('Content-Type: application/vnd.ms-excel');
-        $filename = "MyExcelReport_".date("d-m-Y-His").".xls";
+        $filename = "Data Transaksi_".date("d-m-Y-His").".xls";
         header('Content-Disposition: attachment;filename='.$filename .' ');
         header('Cache-Control: max-age=0');
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
@@ -317,7 +317,7 @@ class TransactionController extends Controller
                 }
                         
         header('Content-Type: application/vnd.ms-excel');
-        $filename = "MyExcelReport_".date("d-m-Y-His").".xls";
+        $filename = "Bukti Transaksi_".date("d-m-Y-His").".xls";
         header('Content-Disposition: attachment;filename='.$filename .' ');
         header('Cache-Control: max-age=0');
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
