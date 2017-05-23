@@ -34,15 +34,13 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['jurnal_no', 'customer_id', 'trans_name', 'type', 'amount', 'currency', 'trans_date'], 'required'],
+            [['jurnal_no', 'customer_id', 'trans_name', 'type', 'amount', 'currency'], 'required'],
             [['jurnal_no', 'customer_id', 'amount'], 'integer'],
-            [['trans_date'], 'safe'],
             [['trans_name', 'currency'], 'string', 'max' => 225],
             [['type'], 'string', 'max' => 3],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -57,7 +55,6 @@ class Transaction extends \yii\db\ActiveRecord
             'type' => 'Type',
             'amount' => 'Amount',
             'currency' => 'Currency',
-            'trans_date' => 'Transaction Date',
         ];
     }
 

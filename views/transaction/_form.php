@@ -43,17 +43,7 @@ use yii\helpers\Url;
         ['IDR' => 'Rupiah', 'MYR' => 'Ringgit', 'SGD' => 'Singapura'],
         ['prompt'=>'Pilih Type Mata Uang']) ?>
     </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'trans_date')->widget(
-                DatePicker::className(),[
-                    'inline' => false,
-                    'clientOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]
-            ) ?>
-        </div>
+        
     <div class="form-group col-md-12">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

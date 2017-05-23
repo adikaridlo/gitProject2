@@ -16,7 +16,7 @@ class Services extends \yii\db\ActiveRecord
 	public function rules()
     {
         return [
-            [['jurnal_no', 'customer_id', 'trans_name', 'type', 'amount', 'currency', 'trans_date'], 'required'],
+            [['jurnal_no', 'customer_id', 'trans_name', 'type', 'amount', 'currency'], 'required'],
             [['jurnal_no', 'customer_id', 'amount'], 'integer'],
             [['trans_date'], 'safe'],
             [['trans_name', 'currency'], 'string'],
@@ -24,7 +24,15 @@ class Services extends \yii\db\ActiveRecord
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
-
+    
+    public function beforeSave($insert){
+        if (parent::beforeSave($insert)) {
+            $this->trans_date = date('Y-m-d H:i:s');
+            return true;
+        }else{
+            return false;
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -39,7 +47,6 @@ class Services extends \yii\db\ActiveRecord
             'type' => 'Type',
             'amount' => 'Amount',
             'currency' => 'Currency',
-            'trans_date' => 'Transaction Date',
         ];
     }
 
