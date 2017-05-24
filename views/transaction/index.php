@@ -26,38 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-4">
 <h1>Tabel Transaksi</h1>
-<?php $form = ActiveForm::begin(['action' =>Url::to(['transaction/index']), 'id' => 'forum_post', 'method' => 'post',]); ?>
-    <?= $form->field($transaksiForm, 'transdate')->widget(
-                DatePicker::className(),[
-                    'inline' => false,
-                    'clientOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]
-            ) ?>
-            <!-- To Date -->
-    <?= $form->field($transaksiForm, 'todate')->widget(
-                DatePicker::className(),[
-                    'inline' => false,
-                    'clientOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]
-            ) ?>
-<!-- Filter Name -->
-<?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
-            'options' => ['prompt' => 'Select a name ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);?>
-            <div class="form-group">
-            <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light']) ?>
-            </div>
-<?php ActiveForm::end(); ?>
+    <?php Pjax::begin();?>
+        <?= Html::beginForm(['transaction/index'], 'post', ['data-pjax' => '', 'class' => 'form-inline']);?>
+            <?= Html::input('text', 'transdate', Yii::$app->request->post('transdate'), ['class' => 'form-control'])?> 
+            <!-- Bagaiman caranya biar Datepicker bisa di panggil di inputan ??? -->
 </div>
 
 <div class="col-md-12">

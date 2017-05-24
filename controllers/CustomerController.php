@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use kartik\depdrop\DepDrop;
 use yii\data\Pagination;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 /**
@@ -138,7 +139,7 @@ class CustomerController extends Controller
             $data = $model->load(Yii::$app->request->post());
             $idCustom = Customer::find()->orderBy(['id'=>SORT_DESC])->one();
             $fromEmail = "webs.art.info@gmail.com";
-            $isiEmail = "<p>Terimakasih telah bergabung bersama Web A.R.T ! Untuk mengaktifkan akun anda, silahkan klik yang ada dibawah ini:</p><p><a href='http://filter.com/customer/validation?id=".$idCustom->id."'>Aktifkan</a></p>" ;
+            $isiEmail = "<p>Terimakasih telah bergabung bersama Web A.R.T ! Untuk mengaktifkan akun anda, silahkan klik yang ada dibawah ini:</p><p><a href='".Url::home(true) . '/customer/validation?id='.$idCustom->id."'>Aktifkan</a>Aktifkan</p>" ;
             
              Yii::$app->mailer->compose()
                 -> setFrom('web.art.info@gmail.com')
