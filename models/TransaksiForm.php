@@ -15,7 +15,7 @@ class TransaksiForm extends Model
 	public function rules()
 	{
 		return [
-            [['transdate', 'todate', 'customer'], 'required'],
+            [['transdate', 'todate', 'customer'], 'string'],
         ];
 	}
 }

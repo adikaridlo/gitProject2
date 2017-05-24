@@ -19,12 +19,14 @@ class ServicesController extends Controller
 	            	'actions' => [
 		            	'insert' => ['POST'],
 		            	'update' => ['PUT'],
+		            	'excel'  => ['POST'],
+		            	'cetak'  => ['GET'],
 	            		],
             	],
 
 		        [
 		        	'class' => 'yii\filters\ContentNegotiator',
-		        	'only' => ['insert','update'],
+		        	'only' => ['insert','update', 'excel', 'cetak'],
 		        	'formats' => [
 		        		'application/json' => Response::FORMAT_JSON,
 		        		],
@@ -46,8 +48,8 @@ class ServicesController extends Controller
 
 		if($action->id == "insert"){
 	         $post = parent::beforeAction($action);
-	     }elseif($action->id == "insert") {
-	     	# code...
+	     }elseif($action->id == "excel") {
+	     	$post = parent::beforeAction($action);
 	     }
 
 	     return $post;
@@ -101,6 +103,108 @@ class ServicesController extends Controller
 		   return array('status'=> false, 'data'=>$ubah->getErrors());
 		  }
     }
+
+    public function actionExcel()
+    {
+        $objPHPExcel = new \PHPExcel();
+        $post = Yii::$app->request->post('Transaction');
+        $data = Transaction::find()
+                ->joinWith('customer')
+                ->all();
+
+                $sheet=0;
+                  
+                $objPHPExcel->setActiveSheetIndex($sheet);
+
+                 
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+                
+            $objPHPExcel->getActiveSheet()->setTitle('xxx')                     
+             ->setCellValue('A1', 'Nomor Jurnal')
+             ->setCellValue('B1', 'Nama Customer')
+             ->setCellValue('C1', 'Jenis Transaksi')
+             ->setCellValue('D1', 'Tipe Pembayaran')
+             ->setCellValue('E1', 'Biaya')
+             ->setCellValue('F1', 'Tanggal Transaksi');
+                 
+         $row=2; //Mengatur tata letak data yang akan ditampilkan berada di baris keberapa...
+
+                $type = "";             
+                foreach ($data as $foo) {  
+                    
+                    if ($foo['type'] == "c") {
+                        $type = "Kredit";
+                    }elseif ($foo['type'] == "d") {
+                        $type = "Debet";
+                    }
+                    $objPHPExcel->getActiveSheet()->setCellValue('A'.$row,$foo['jurnal_no']); 
+                    $objPHPExcel->getActiveSheet()->setCellValue('B'.$row,$foo->customer->name);
+                    $objPHPExcel->getActiveSheet()->setCellValue('C'.$row,$foo['trans_name']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('D'.$row,$type);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E'.$row,$foo['currency']." ".$foo['amount']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F'.$row,$foo['trans_date']);
+                    $row++ ;
+                }
+                        
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = "Data Transaksi_".date("d-m-Y-His").".xls";
+        header('Content-Disposition: attachment;filename='.$filename .' ');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');    
+  }
+
+  public function actionCetak($id)
+    {
+        $objPHPExcel = new \PHPExcel();
+        $data = Transaction::find()
+                ->joinWith('customer')
+                ->Where(['transaction.id' => $id])
+                ->all();
+
+                $sheet=0;
+                  
+                $objPHPExcel->setActiveSheetIndex($sheet);
+
+                 
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+                
+            $objPHPExcel->getActiveSheet()->setTitle('xxx')                     
+             ->setCellValue('A1', 'Nomor Jurnal')
+             ->setCellValue('B1', 'Nama Customer')
+             ->setCellValue('C1', 'Jenis Transaksi')
+             ->setCellValue('D1', 'Tipe Pembayaran')
+             ->setCellValue('E1', 'Biaya')
+             ->setCellValue('F1', 'Tanggal Transaksi');
+                 
+         $row=2; //Mengatur tata letak data yang akan ditampilkan berada di baris keberapa...
+
+                $type = "";             
+                foreach ($data as $foo) {  
+                    
+                    if ($foo['type'] == "c") {
+                        $type = "Kredit";
+                    }elseif ($foo['type'] == "d") {
+                        $type = "Debet";
+                    }
+                    $objPHPExcel->getActiveSheet()->setCellValue('A'.$row,$foo['jurnal_no']); 
+                    $objPHPExcel->getActiveSheet()->setCellValue('B'.$row,$foo->customer->name);
+                    $objPHPExcel->getActiveSheet()->setCellValue('C'.$row,$foo['trans_name']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('D'.$row,$type);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E'.$row,$foo['currency']." ".$foo['amount']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('F'.$row,$foo['trans_date']);
+                    $row++ ;
+                }
+                        
+        header('Content-Type: application/vnd.ms-excel');
+        $filename = "Bukti Transaksi_".date("d-m-Y-His").".xls";
+        header('Content-Disposition: attachment;filename='.$filename .' ');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');    
+  }
 
 }
 ?>

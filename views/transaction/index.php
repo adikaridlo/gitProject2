@@ -16,20 +16,39 @@ use kartik\select2\Select2;
 /* @var $searchModel app\models\TransactionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+
 $this->title = 'Transactions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="col-md-12">
-    <?= Html::a(' PRINT DATA', ['excel'], ['class' => 'btn btn-success glyphicon glyphicon-print'])?>
+    <?= Html::a(' PRINT ALL DATA', ['transaction/excel'], ['class' => 'btn btn-success glyphicon glyphicon-print'], ['method' => 'POST'])?>
     <?= Html::a('',['create'], ['class' => 'btn btn-success glyphicon glyphicon-plus'])?>
 </div>
 
+<script>
+    $(function() {
+       $( "#datepicker" ).datepicker();
+    });
+</script>
+
+<?php $this->registerJs('
+    $((#datepicker).click(function() {
+       $( "#datepicker" ).datepicker();
+    }));
+'); ?>
+
 <div class="col-md-4">
 <h1>Tabel Transaksi</h1>
-    <?php Pjax::begin();?>
-        <?= Html::beginForm(['transaction/index'], 'post', ['data-pjax' => '', 'class' => 'form-inline']);?>
-            <?= Html::input('text', 'transdate', Yii::$app->request->post('transdate'), ['class' => 'form-control'])?> 
-            <!-- Bagaiman caranya biar Datepicker bisa di panggil di inputan ??? -->
+<?php Pjax::begin(); ?>
+    <?= Html::beginForm(['transaction/fil'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
+    <?= Html::input('text', 'transdate', Yii::$app->request->post('transdate'), ['class' => 'form-control']) ?>
+    <?= Html::input('text', 'todate', Yii::$app->request->post('todate'), ['class' => 'form-control']) ?>
+    <?= Html::input('text', 'customer', Yii::$app->request->post('customer'), ['class' => 'form-control']) ?>
+    <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light']) ?>
+<?= Html::endForm() ?>
+<?php Pjax::end(); ?>
+            <!-- Bagaiman caranya biar Datepicker bisa di panggil di inputan -->
 </div>
 
 <div class="col-md-12">
@@ -67,7 +86,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </tr>
     <?php endforeach;?>
     </table>
+<?php 
 
+    if($filter == "YES") {
+       echo Html::a(' PRINT DATA FILTER', ['transaction/filter', 'id' => $item['customer_id']], ['class' => 'btn btn-success glyphicon glyphicon-print'], ['method' => 'POST']);
+    }elseif($filter == "NO"){
+       echo Html::a('');
+    }
+?>
 <?php echo Html::endForm(); ?>
 <?php echo LinkPager::widget([
     'pagination' => $pages,
