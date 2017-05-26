@@ -246,9 +246,9 @@ class TransactionController extends Controller
       $custom=$_POST['customer1'];
       echo $custom;
 
-      $transdate = Yii::$app->request->post('transdate');
-      $todate = Yii::$app->request->post('todate');
-      $customer = Yii::$app->request->post('customer');
+      // $transdate = Yii::$app->request->post('transdate');
+      // $todate = Yii::$app->request->post('todate');
+      // $customer = Yii::$app->request->post('customer');
 
       $query = Transaction::find()
                     ->joinWith('customer')

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-6">
 <h1>Tabel Transaksi</h1>
-    <?php $form = ActiveForm::begin(['action' =>Url::to(['transaction/index']), 'id' => 'forum_post', 'method' => 'post',]); ?>
+    <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($transaksiForm, 'transdate')->widget(
                 DatePicker::className(),[
                     'inline' => false,
@@ -191,18 +191,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 alert('Please Transaksi Date Harus Di Isi..');
             }
 
+            if(From == '' && to == '' || customer == ''){
+                alert('Harap di Isi..');
+            }
+
             if(From == '' && to == ''  && customer != '' || From != '' && to != '' && customer == '' ||  From != '' && to != '' && customer != ''){
                  
                  var dataString = 'From1='+ From + '&to1='+ to + '&customer1='+ customer;
+
                 $.ajax({
-                        type: 'POST',
-                        url: '".Url::home(true) . '/transaction/fil'."',
-                        data: dataString,
-                        cache: false,
-                        success: function(result){
-                        alert(result);
-                        }
-                        });
+                      url: ".form.attr(Url::home(true) . '/transaction/fil').",
+                      type: 'post',
+                      data: form.serialize(),
+                      success: function (response) {
+                           // do something with response
+                      }
+                 });
+                 return false;
             }
 
         });
