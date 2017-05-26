@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23 Mei 2017 pada 11.16
+-- Generation Time: 26 Mei 2017 pada 09.55
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.2
 
@@ -104,18 +104,10 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `name`, `email`, `telp`, `address`, `country_id`, `city_id`, `status`) VALUES
-(2, 'Adika Ridlo T', 'adika2@gmail.com', '0857930323482', 'Magetan, karas, Ginuk', 5, 2, ''),
-(3, 'Ricky', 'ricky@gmail.com', '0893949393', 'aad', 5, 4, ''),
-(4, 'Dinar', 'dinar', '083932929', 'Jl. Lindu', 5, 3, ''),
-(15, 'Testing', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 2, 'YES'),
-(17, 'Testing', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 4, 'YES'),
-(18, 'Dinar', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 6, 5, 'YES'),
-(19, 'Testing', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 2, 'YES'),
-(20, 'Dinar', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 6, 5, 'NO'),
-(21, 'Baru', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 4, 'NO'),
-(22, 'XXX', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 4, 'NO'),
-(23, 'Sudirman', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 2, 'NO'),
-(24, 'Tesst', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 3, 'NO');
+(30, 'ADIKA', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 2, 'YES'),
+(31, 'RICKY', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 3, 'YES'),
+(32, 'DINAR', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 4, 'YES'),
+(33, 'SUDIR', 'arsuga02@gmail.com', '085790331421', 'Ginuk, Karas, Magetan, JATIM', 5, 2, 'YES');
 
 -- --------------------------------------------------------
 
@@ -199,7 +191,45 @@ INSERT INTO `logs` (`id`, `request`, `respons`, `ip_address`, `created_date`) VA
 (80, 'null', '', '127.0.0.1', '2017-05-23 05:09:01.000000'),
 (81, 'null', '', '127.0.0.1', '2017-05-23 05:09:59.000000'),
 (82, 'null', '', '127.0.0.1', '2017-05-23 05:12:44.000000'),
-(83, '{\"jurnal_no\":\"4324324224\",\"customer_id\":\"19\",\"trans_name\":\"Langsung\",\"type\":\"c\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":83}', '127.0.0.1', '2017-05-23 10:06:53.000000');
+(83, '{\"jurnal_no\":\"4324324224\",\"customer_id\":\"19\",\"trans_name\":\"Langsung\",\"type\":\"c\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":83}', '127.0.0.1', '2017-05-23 10:06:53.000000'),
+(84, 'null', '', '127.0.0.1', '2017-05-24 07:42:26.000000'),
+(85, 'null', '', '127.0.0.1', '2017-05-24 07:44:53.000000'),
+(86, 'null', '', '127.0.0.1', '2017-05-24 07:48:14.000000'),
+(87, 'null', '', '127.0.0.1', '2017-05-24 07:48:15.000000'),
+(88, 'null', '', '127.0.0.1', '2017-05-24 07:48:15.000000'),
+(89, 'null', '', '127.0.0.1', '2017-05-24 07:48:16.000000'),
+(90, 'null', '', '127.0.0.1', '2017-05-24 07:48:40.000000'),
+(91, 'null', '', '127.0.0.1', '2017-05-24 07:48:40.000000'),
+(92, 'null', '', '127.0.0.1', '2017-05-24 07:48:41.000000'),
+(93, 'null', '', '127.0.0.1', '2017-05-24 07:51:31.000000'),
+(94, 'null', '', '127.0.0.1', '2017-05-24 07:51:32.000000'),
+(95, 'null', '', '127.0.0.1', '2017-05-24 07:51:32.000000'),
+(96, 'null', '', '127.0.0.1', '2017-05-24 07:51:32.000000'),
+(97, 'null', '', '127.0.0.1', '2017-05-24 07:51:33.000000'),
+(98, 'null', '', '127.0.0.1', '2017-05-24 07:51:33.000000'),
+(99, 'null', '', '127.0.0.1', '2017-05-24 07:51:34.000000'),
+(100, 'null', '', '127.0.0.1', '2017-05-24 07:52:15.000000'),
+(101, 'null', '', '127.0.0.1', '2017-05-24 07:52:26.000000'),
+(102, 'null', '', '127.0.0.1', '2017-05-24 07:52:48.000000'),
+(103, 'null', '', '127.0.0.1', '2017-05-24 07:52:49.000000'),
+(104, 'null', '', '127.0.0.1', '2017-05-24 07:52:52.000000'),
+(105, 'null', '', '127.0.0.1', '2017-05-24 07:54:14.000000'),
+(106, 'null', '', '127.0.0.1', '2017-05-24 07:54:24.000000'),
+(107, 'null', '', '127.0.0.1', '2017-05-24 07:54:47.000000'),
+(108, 'null', '', '127.0.0.1', '2017-05-24 07:54:48.000000'),
+(109, 'null', '', '127.0.0.1', '2017-05-24 07:54:48.000000'),
+(110, 'null', '', '127.0.0.1', '2017-05-24 07:54:48.000000'),
+(111, 'null', '', '127.0.0.1', '2017-05-24 08:01:34.000000'),
+(112, '{\"jurnal_no\":\"100000000\",\"customer_id\":\"2\",\"trans_name\":\"Langsung\",\"type\":\"c\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":112}', '127.0.0.1', '2017-05-24 10:01:15.000000'),
+(113, '{\"jurnal_no\":\"10000001\",\"customer_id\":\"3\",\"trans_name\":\"Langsung\",\"type\":\"c\",\"amount\":\"70000000\",\"currency\":\"MYR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":113}', '127.0.0.1', '2017-05-24 10:04:41.000000'),
+(114, '{\"jurnal_no\":\"454353\",\"customer_id\":\"4\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"32423424\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":114}', '127.0.0.1', '2017-05-25 08:24:46.000000'),
+(115, '{\"jurnal_no\":\"430000\",\"customer_id\":\"29\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"3000\",\"currency\":\"MYR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":115}', '127.0.0.1', '2017-05-25 08:25:11.000000'),
+(116, '{\"jurnal_no\":\"100000000\",\"customer_id\":\"2\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":116}', '127.0.0.1', '2017-05-25 08:25:49.000000'),
+(117, '{\"jurnal_no\":\"100000001\",\"customer_id\":\"2\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"MYR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":117}', '127.0.0.1', '2017-05-25 08:26:08.000000'),
+(118, '{\"jurnal_no\":\"123\",\"customer_id\":\"30\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":118}', '127.0.0.1', '2017-05-25 12:29:23.000000'),
+(119, '{\"jurnal_no\":\"124\",\"customer_id\":\"31\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":119}', '127.0.0.1', '2017-05-25 12:29:49.000000'),
+(120, '{\"jurnal_no\":\"125\",\"customer_id\":\"32\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":120}', '127.0.0.1', '2017-05-25 12:30:09.000000'),
+(121, '{\"jurnal_no\":\"1236\",\"customer_id\":\"33\",\"trans_name\":\"Langsung\",\"type\":\"d\",\"amount\":\"70000000\",\"currency\":\"IDR\"}', '{\"status\":true,\"data\":\"Success...\",\"id\":121}', '127.0.0.1', '2017-05-26 05:24:30.000000');
 
 -- --------------------------------------------------------
 
@@ -246,21 +276,10 @@ CREATE TABLE `transaction` (
 --
 
 INSERT INTO `transaction` (`id`, `jurnal_no`, `customer_id`, `trans_name`, `type`, `amount`, `currency`, `trans_date`) VALUES
-(2, '12345687', 3, 'Utang', 'd', 11000, 'IDR', '2017-05-23'),
-(3, '12345600', 2, 'Langsung', 'd', 3, 'MYR', '2017-05-09'),
-(4, '12345200', 4, 'Langsung', 'c', 3, 'MYR', '2017-05-01'),
-(5, '12345900', 2, 'Langsung', 'c', 3, 'IDR', '2017-05-03'),
-(7, '10000000', 2, 'Utang', 'c', 3000, 'IDR', '2017-05-25'),
-(55, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-25'),
-(56, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-25'),
-(57, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-31'),
-(58, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-31'),
-(59, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-31'),
-(60, '10000000', 2, 'Langsung', 'd', 70000000, 'MYR', '2017-05-31'),
-(61, '10000000', 3, 'Langsung', 'c', 32423424, 'MYR', '2017-05-31'),
-(62, '10000000', 2, 'Langsung', 'c', 70000000, 'IDR', '2017-05-31'),
-(67, '454353', 3, 'Langsung', 'c', 32423424, 'IDR', '2017-05-23'),
-(68, '43243242', 19, 'Langsung', 'c', 70000000, 'IDR', '2017-05-23');
+(75, '123', 30, 'Langsung', 'd', 70000000, 'IDR', '2017-05-25'),
+(76, '124', 31, 'Langsung', 'd', 70000000, 'IDR', '2017-05-25'),
+(77, '125', 32, 'Langsung', 'd', 70000000, 'IDR', '2017-05-25'),
+(78, '1236', 33, 'Langsung', 'd', 70000000, 'IDR', '2017-05-26');
 
 --
 -- Indexes for dumped tables
@@ -336,12 +355,12 @@ ALTER TABLE `country`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
@@ -351,7 +370,7 @@ ALTER TABLE `pengguna`
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(45) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
