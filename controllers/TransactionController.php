@@ -14,6 +14,8 @@ use app\models\TransaksiForm;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\grid\GridView;
+// use yii\widgets\ActiveForm;
+// use yii\web\Response;
 
 /**
  * TransactionController implements the CRUD actions for Transaction model.
@@ -34,7 +36,7 @@ class TransactionController extends Controller
             ],
             [
               'class' => 'yii\filters\ContentNegotiator',
-              'only' => ['index','update', 'excel', 'cetak','filter','create','fil'],
+              'only' => ['index','update', 'excel', 'cetak','filter','create','fil','validasiform'],
             ],
         ];
     }
@@ -69,9 +71,15 @@ class TransactionController extends Controller
         $post = parent::beforeAction($action);
        }elseif($action->id == "fil") {
         $post = parent::beforeAction($action);
+       }elseif($action->id == "validasiform") {
+        $post = parent::beforeAction($action);
        }
 
        return $post;
+  }
+
+  public function actionValidasiform(array $cekform){
+    
   }
 
     /**
@@ -80,18 +88,98 @@ class TransactionController extends Controller
      */
     public function actionIndex()
     {
-      
-        $model = new TransaksiForm();
-        if($model->load(yii::$app->request->post()) && $model->validate()){
+      // $From ="";
+      // $to="";
+      // $custom="";
+      // $From=$_POST['From'];
+      // echo $From;
+      // $to=$_POST['to'];
+      // echo $to;
+      // $custom=$_POST['customer'];
+      // echo $custom;
+        // $model = new TransaksiForm();
+
+        // if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+        //     Yii::$app->response->format = Response::FORMAT_JSON;
+        //     return ActiveForm::validate($model);
+        // }
+
+        // if($model->load(yii::$app->request->post()) && $model->validate()){
+        //     // Jalankan Filter.....
+        //     $transDate = Html::encode($model->transdate);
+        //     $toDate = Html::encode($model->todate);
+        //     $ID = Html::encode($model->customer);
+        //     echo $ID;
+        //     $query = Transaction::find()
+        //             ->joinWith('customer')
+        //             ->Where(['between','trans_date',$transDate,$toDate])
+        //             ->orwhere(['transaction.customer_id' => $ID])
+        //             ->orderBy(['transaction.id' => SORT_ASC]);
+        //     $countQuery = clone $query;
+        //     $pages = new Pagination([
+        //         'defaultPageSize' => 3,
+        //         'totalCount' => $countQuery->count()]);
+        //     $models = $query->offset($pages->offset)
+        //         ->limit($pages->limit)
+        //         ->all();
+        //     $transaksiForm = new TransaksiForm();
+
+        //     $filter = "YES";
+
+        //     $datacetak = Transaction::find()
+        //             ->joinWith('customer')
+        //             ->Where(['between','trans_date',$transDate,$toDate])
+        //             ->orwhere(['transaction.customer_id' => $ID])
+        //             ->orderBy(['transaction.id' => SORT_ASC])
+        //             ->all();
+        //     return $this->render('index',[
+        //          'models' => $models,
+        //          'pages' => $pages,
+        //          'transaksiForm' => $transaksiForm,
+        //          'filter' => $filter,
+        //          'datacetak' => $datacetak,
+        //         ]);
+        // }else{
+        //     // Mentahan...
+        //     $query = Transaction::find()
+        //         ->joinWith('customer');
+
+        //     $countQuery = clone $query;
+
+        //     $pages = new Pagination([
+        //         'defaultPageSize' =>3,
+        //         'totalCount' => $countQuery->count()]);
+
+        //     $models = $query->offset($pages->offset)
+        //         ->limit($pages->limit)
+        //         ->all();
+                
+        //     $transaksiForm = new TransaksiForm();
+        //     $message = "";
+        //     $datacetak = NULL;
+        //     $filter = "NO";
+        //     return $this->render('index', [
+        //          'models' => $models,
+        //          'pages' => $pages,
+        //          'transaksiForm' => $transaksiForm,
+        //          'filter' => $filter,
+        //          'datacetak' => $datacetak,
+        //     ]);
+        // }
+
+        $transdate = Yii::$app->request->post('transdate');
+        $todate = Yii::$app->request->post('todate');
+        $customer = Yii::$app->request->post('customer');
+        if ($transdate != NULL) {
             // Jalankan Filter.....
-            $transDate = Html::encode($model->transdate);
-            $toDate = Html::encode($model->todate);
-            $ID = Html::encode($model->customer);
-            echo $ID;
+            // $transDate = Html::encode($model->transdate);
+            // $toDate = Html::encode($model->todate);
+            // $ID = Html::encode($model->customer);
+            // echo $ID;
             $query = Transaction::find()
                     ->joinWith('customer')
-                    ->Where(['between','trans_date',$transDate,$toDate])
-                    ->orwhere(['transaction.customer_id' => $ID])
+                    ->Where(['between','trans_date',$transdate,$todate])
+                    ->orwhere(['transaction.customer_id' => $customer])
                     ->orderBy(['transaction.id' => SORT_ASC]);
             $countQuery = clone $query;
             $pages = new Pagination([
@@ -103,12 +191,19 @@ class TransactionController extends Controller
             $transaksiForm = new TransaksiForm();
 
             $filter = "YES";
+
+            $datacetak = Transaction::find()
+                    ->joinWith('customer')
+                    ->Where(['between','trans_date',$transdate,$todate])
+                    ->orwhere(['transaction.customer_id' => $customer])
+                    ->orderBy(['transaction.id' => SORT_ASC])
+                    ->all();
             return $this->render('index',[
-                'models' => $models,
+                 'models' => $models,
                  'pages' => $pages,
-                'models'=> $models,
-                'transaksiForm' => $transaksiForm,
+                 'transaksiForm' => $transaksiForm,
                  'filter' => $filter,
+                 'datacetak' => $datacetak,
                 ]);
         }else{
             // Mentahan...
@@ -127,25 +222,37 @@ class TransactionController extends Controller
                 
             $transaksiForm = new TransaksiForm();
             $message = "";
+            $datacetak = NULL;
             $filter = "NO";
             return $this->render('index', [
                  'models' => $models,
                  'pages' => $pages,
                  'transaksiForm' => $transaksiForm,
                  'filter' => $filter,
+                 'datacetak' => $datacetak,
             ]);
         }
         
     }
 
     public function actionFil(){
+      $From ="";
+      $to="";
+      $custom="";
+      $From=$_POST['From1'];
+      echo $From;
+      $to=$_POST['to1'];
+      echo $to;
+      $custom=$_POST['customer1'];
+      echo $custom;
+
       $transdate = Yii::$app->request->post('transdate');
       $todate = Yii::$app->request->post('todate');
       $customer = Yii::$app->request->post('customer');
 
       $query = Transaction::find()
                     ->joinWith('customer')
-                    ->orWhere(['between','trans_date',$transdate,$todate])
+                    ->orWhere(['between','trans_date',$From,$to])
                     ->orwhere(['transaction.customer_id' => $customer])
                     ->orderBy(['transaction.id' => SORT_ASC]);
             $countQuery = clone $query;
@@ -398,13 +505,26 @@ class TransactionController extends Controller
         $objWriter->save('php://output');    
   }
 
-  public function actionFilter($id)
+  public function actionFilter(array $data)
     {
+
+      foreach($data as $cetak):
+        // echo "<br>";
+        // var_dump($cetak);
+        // echo "<br>".$cetak['jurnal_no'];
+        // echo "<br>".$cetak['customer'];
+        // echo "<br>".$cetak['trans_name'];
+        // echo "<br>".$cetak['type'];
+        // echo "<br>".$cetak['biaya'];
+        // echo "<br>".$cetak['trans_date'];
+
+        endforeach;
+     
         $objPHPExcel = new \PHPExcel();
-        $data = Transaction::find()
-                ->joinWith('customer')
-                ->Where(['transaction.customer_id' => $id])
-                ->all();
+        // $data = Transaction::find()
+        //         ->joinWith('customer')
+        //         ->Where(['transaction.customer_id' => $id])
+        //         ->all();
 
                 $sheet=0;
                   
@@ -419,27 +539,21 @@ class TransactionController extends Controller
              ->setCellValue('B1', 'Nama Customer')
              ->setCellValue('C1', 'Jenis Transaksi')
              ->setCellValue('D1', 'Tipe Pembayaran')
-             ->setCellValue('E1', 'Biaya')
+             ->setCellValue('E1', 'Total Bayar')
              ->setCellValue('F1', 'Tanggal Transaksi');
                  
          $row=2; //Mengatur tata letak data yang akan ditampilkan berada di baris keberapa...
 
-                $type = "";             
-                foreach ($data as $foo) {  
-                    
-                    if ($foo['type'] == "c") {
-                        $type = "Kredit";
-                    }elseif ($foo['type'] == "d") {
-                        $type = "Debet";
-                    }
+                foreach($data as $foo):  
+
                     $objPHPExcel->getActiveSheet()->setCellValue('A'.$row,$foo['jurnal_no']); 
-                    $objPHPExcel->getActiveSheet()->setCellValue('B'.$row,$foo->customer->name);
+                    $objPHPExcel->getActiveSheet()->setCellValue('B'.$row,$foo['customer']);
                     $objPHPExcel->getActiveSheet()->setCellValue('C'.$row,$foo['trans_name']);
-                    $objPHPExcel->getActiveSheet()->setCellValue('D'.$row,$type);
-                    $objPHPExcel->getActiveSheet()->setCellValue('E'.$row,$foo['currency']." ".$foo['amount']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('D'.$row,$foo['type']);
+                    $objPHPExcel->getActiveSheet()->setCellValue('E'.$row,$foo['biaya']);
                     $objPHPExcel->getActiveSheet()->setCellValue('F'.$row,$foo['trans_date']);
                     $row++ ;
-                }
+                endforeach;
                         
         header('Content-Type: application/vnd.ms-excel');
         $filename = "Bukti Transaksi_".date("d-m-Y-His").".xls";

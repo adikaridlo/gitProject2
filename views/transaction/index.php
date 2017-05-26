@@ -8,6 +8,7 @@ use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Transaction;
+use app\models\TransaksiForm;
 use app\models\Customer;
 use dosamigos\datepicker\DatePicker;
 use kartik\select2\Select2;
@@ -26,28 +27,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Html::a('',['create'], ['class' => 'btn btn-success glyphicon glyphicon-plus'])?>
 </div>
 
-<script>
-    $(function() {
-       $( "#datepicker" ).datepicker();
-    });
-</script>
-
-<?php $this->registerJs('
-    $((#datepicker).click(function() {
-       $( "#datepicker" ).datepicker();
-    }));
-'); ?>
-
-<div class="col-md-4">
+<div class="col-md-6">
 <h1>Tabel Transaksi</h1>
-<?php Pjax::begin(); ?>
-    <?= Html::beginForm(['transaction/fil'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>
-    <?= Html::input('text', 'transdate', Yii::$app->request->post('transdate'), ['class' => 'form-control']) ?>
-    <?= Html::input('text', 'todate', Yii::$app->request->post('todate'), ['class' => 'form-control']) ?>
-    <?= Html::input('text', 'customer', Yii::$app->request->post('customer'), ['class' => 'form-control']) ?>
-    <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light']) ?>
-<?= Html::endForm() ?>
-<?php Pjax::end(); ?>
+    <?php $form = ActiveForm::begin(['action' =>Url::to(['transaction/index']), 'id' => 'forum_post', 'method' => 'post',]); ?>
+    <?= $form->field($transaksiForm, 'transdate')->widget(
+                DatePicker::className(),[
+                    'inline' => false,
+                    'options' => ['placeholder' => 'Enter birth date ...'],
+                    'clientOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd'
+                    ]
+                ]
+            ) ?>
+            <!-- To Date -->
+    <?= $form->field($transaksiForm, 'todate')->widget(
+                DatePicker::className(),[
+                    'inline' => false,
+                    'options' => ['placeholder' => 'Enter birth date ...'],
+                    'clientOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd'
+                    ]
+                ]
+            ) ?>
+<!-- Filter Name -->
+<?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
+            'options' => ['prompt' => 'Select a name ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);?>
+            <div>
+                <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light', 'id' => 'cari']) ?>
+            </div>
+<?php ActiveForm::end(); ?>
             <!-- Bagaiman caranya biar Datepicker bisa di panggil di inputan -->
 </div>
 
@@ -66,37 +81,142 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Tanggal Transaksi</th>
         <th>Cetak</th>
         </tr>
-        <?php foreach($models as $item):?>
-            <?php 
-                if ($item['type'] == "c") {
-                    $type = "Kredit";
-                }elseif ($item['type'] == "d") {
-                    $type = "Debit";
-                }
-            ?>
-        <tr>
-            <td><?= $item['jurnal_no']?></td>
-            <td><?= $item->customer->name?></td>
-            <td><?= $item['trans_name']?></td>
-            <td><?= $type?></td>
-            <td class="text-right"><?= $item['currency']." ".$item['amount']?></td>
-            <td><?= $item['trans_date']?></td>
-            <td class="text-center"><?=  Html::a('',['cetak', 'id' => $item['id']], ['class' => 'glyphicon glyphicon-download-alt'])?></td>
-            <!--  -->
-        </tr>
-    <?php endforeach;?>
-    </table>
-<?php 
 
-    if($filter == "YES") {
-       echo Html::a(' PRINT DATA FILTER', ['transaction/filter', 'id' => $item['customer_id']], ['class' => 'btn btn-success glyphicon glyphicon-print'], ['method' => 'POST']);
-    }elseif($filter == "NO"){
-       echo Html::a('');
+        <?php if ($models == NULL) {
+            echo "<tr>
+                    <td> Not Result </td>
+                </tr>
+            </table>
+            ";
+
+        }else{?>
+
+                <?php foreach($models as $item):?>
+
+                    <?php 
+                        if ($item['type'] == "c") {
+                            $type = "Kredit";
+                        }elseif ($item['type'] == "d") {
+                            $type = "Debit";
+                        }
+
+                        $data[] = array(
+                        'jurnal_no' => $item['jurnal_no'],
+                        'customer' => $item->customer->name,
+                        'trans_name' => $item['trans_name'],
+                        'type' => $type,
+                        'trans_date' => $item['trans_date']
+                        );
+
+                    ?>
+
+                    <tr>
+                        <td><?= $item['jurnal_no']?></td>
+                        <td><?= $item->customer->name?></td>
+                        <td><?= $item['trans_name']?></td>
+                        <td><?= $type?></td>
+                        <td class="text-right"><?= $item['currency']." ".$item['amount']?></td>
+                        <td><?= $item['trans_date']?></td>
+                        <td class="text-center"><?=  Html::a('',['cetak', 'id' => $item['id']], ['class' => 'glyphicon glyphicon-download-alt'])?></td>
+                    </tr>
+
+            <?php endforeach;?>
+
+            </table>
+<?php }?>
+
+<?php echo Html::endForm(); ?>
+
+<?php
+    if ($datacetak != NULL) {
+        foreach ($datacetak as $cetak) {
+                  if ($cetak['type'] == "c") {
+                            $type = "Kredit";
+                        }elseif ($cetak['type'] == "d") {
+                            $type = "Debit";
+                        }
+                        $currency = $cetak['currency'];
+                        $amount   = $cetak['amount'];
+                        $data2[] = array(
+                        'jurnal_no' => $cetak['jurnal_no'],
+                        'customer' => $cetak->customer->name,
+                        'trans_name' => $cetak['trans_name'],
+                        'type' => $type,
+                        'biaya' => $currency." ".$amount,
+                        'trans_date' => $cetak['trans_date']
+                        );
+        }
+
+                    if($filter == "YES") {
+                       
+                       echo Html::a(' PRINT DATA FILTER', ['transaction/filter', 'data' => $data2], ['class' => 'btn btn-success glyphicon glyphicon-print'], ['method' => 'POST']);
+
+                    }elseif($filter == "NO"){
+
+                       echo Html::a('');
+
+                    }
+
+    }elseif ($datacetak == NULL) {
+
+        echo "";
     }
 ?>
-<?php echo Html::endForm(); ?>
+
+
 <?php echo LinkPager::widget([
     'pagination' => $pages,
 ]);?>
+
 </div>
 </div>
+
+
+<?php $this->registerJs("
+    $(document).ready(function(){
+        
+        
+
+        $('#cari').click(function(){
+            var From = $('#transaksiform-transdate').val();
+            var to   = $('#transaksiform-todate').val();
+            var customer   = $('.select2-search__field').val();
+            if (From != '' && to == '' || customer == '') {
+
+                alert('Please To Date Harus Di Isi..');
+
+            }
+
+            if(From == '' && to != ''  || customer == ''){
+                alert('Please Transaksi Date Harus Di Isi..');
+            }
+
+            if(From == '' && to == ''  && customer != '' || From != '' && to != '' && customer == '' ||  From != '' && to != '' && customer != ''){
+                 
+                 var dataString = 'From1='+ From + '&to1='+ to + '&customer1='+ customer;
+                $.ajax({
+                        type: 'POST',
+                        url: '".Url::home(true) . '/transaction/fil'."',
+                        data: dataString,
+                        cache: false,
+                        success: function(result){
+                        alert(result);
+                        }
+                        });
+            }
+
+        });
+    });
+
+"); ?>
+<!-- var myKeyVals = { A1984 : 1, A9873 : 5, A1674 : 2, A8724 : 1, A3574 : 3, A1165 : 5 }
+
+
+
+var saveData = $.ajax({
+      type: 'POST',
+      url: "someaction.do?action=saveData",
+      data: myKeyVals,
+      dataType: "text",
+      success: function(resultData) { alert("Save Complete") }
+}); -->

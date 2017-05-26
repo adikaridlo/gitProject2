@@ -21,7 +21,8 @@
         "phpoffice/phpexcel": "*",
         "2amigos/yii2-date-picker-widget": "*",
         "conquer/select2": "*",
-        "kartik-v/yii2-widget-select2": "@dev"
+        "kartik-v/yii2-widget-select2": "@dev",
+        "kop/yii2-conditional-validator": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
