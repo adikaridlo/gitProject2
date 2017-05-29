@@ -3,7 +3,7 @@
 use yii\helpers\Html;
  use yii\helpers\Url;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
+//use yii\widgets\Pjax;
 use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -22,18 +22,28 @@ $this->title = 'Transactions';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="col-md-12">
+<div class="col-md-12 del">
     <?= Html::a(' PRINT ALL DATA', ['transaction/excel'], ['class' => 'btn btn-success glyphicon glyphicon-print'], ['method' => 'POST'])?>
     <?= Html::a('',['create'], ['class' => 'btn btn-success glyphicon glyphicon-plus'])?>
 </div>
-
 <div class="col-md-6">
 <h1>Tabel Transaksi</h1>
-    <?php $form = ActiveForm::begin(); ?>
+
+    <?php $form = ActiveForm::begin(['action' =>Url::to(['transaction/index']),'method' => 'post',]); ?>
+
+    <!-- Filter Name -->
+<?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
+            'options' => ['prompt' => 'Select a name ...', 'class' => 'cust'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);?>
+        
     <?= $form->field($transaksiForm, 'transdate')->widget(
                 DatePicker::className(),[
                     'inline' => false,
-                    'options' => ['placeholder' => 'Enter birth date ...'],
+                    'options' => ['placeholder' => 'Enter birth date ...', 'class' => 'from'],
                     'clientOptions' => [
                         'autoclose' => true,
                         'format' => 'yyyy-mm-dd'
@@ -44,34 +54,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($transaksiForm, 'todate')->widget(
                 DatePicker::className(),[
                     'inline' => false,
-                    'options' => ['placeholder' => 'Enter birth date ...'],
+                    'options' => ['placeholder' => 'Enter birth date ...', 'class' => 'to'],
                     'clientOptions' => [
                         'autoclose' => true,
                         'format' => 'yyyy-mm-dd'
                     ]
                 ]
             ) ?>
-<!-- Filter Name -->
-<?= $form->field($transaksiForm, 'customer')->widget(Select2::classname(), [
-            'data' => ArrayHelper::map(Customer::find()->all(), 'id','name'),
-            'options' => ['prompt' => 'Select a name ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]);?>
+
             <div>
-                <?= Html::submitButton('Cari', ['class' => 'btn btn-primary waves-effect waves-light', 'id' => 'cari']) ?>
+                <?= Html::button('Cari', ['class' => 'btn btn-primary waves-effect waves-light', 'id' => 'cari']) ?>
             </div>
 <?php ActiveForm::end(); ?>
             <!-- Bagaiman caranya biar Datepicker bisa di panggil di inputan -->
 </div>
-
-<div class="col-md-12">
+<div class="col-md-12" id="mytable">
 <div class="table-responsive">
-
 <?php echo Html::beginForm(array('transaction/excel')); ?>
-
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped" >
         <tr>
         <th>Nomor Jurnal</th>
         <th>Customer Name</th>
@@ -178,36 +178,44 @@ $this->params['breadcrumbs'][] = $this->title;
         
 
         $('#cari').click(function(){
-            var From = $('#transaksiform-transdate').val();
-            var to   = $('#transaksiform-todate').val();
-            var customer   = $('.select2-search__field').val();
-            if (From != '' && to == '' || customer == '') {
+            var From = $('.from').val();
+            var to   = $('.to').val();
+            var customer   = $('.cust').val();
+
+            if (From != '' && to == '' && customer == '') {
 
                 alert('Please To Date Harus Di Isi..');
 
-            }
+            }else if(From == '' && to != ''  && customer == ''){
 
-            if(From == '' && to != ''  || customer == ''){
                 alert('Please Transaksi Date Harus Di Isi..');
-            }
 
-            if(From == '' && to == '' || customer == ''){
-                alert('Harap di Isi..');
-            }
+            }else if(From == '' && to == '' && customer == ''){
 
-            if(From == '' && to == ''  && customer != '' || From != '' && to != '' && customer == '' ||  From != '' && to != '' && customer != ''){
+                alert('Data Harap di Isi..');
+
+            }else if(From != '' && to == '' && customer != ''){
+
+                alert('Please To Date Harus Di Isi..');
+
+            }else if(From == '' && to != '' && customer != ''){
+
+                alert('Please Transaksi Date Harus Di Isi..');
+
+            }else if(From == '' && to == ''  && customer != '' || From != '' && to != '' && customer == '' ||  From != '' && to != '' && customer != ''){
                  
-                 var dataString = 'From1='+ From + '&to1='+ to + '&customer1='+ customer;
-
+                var dataString = 'From1='+ From + '&to1='+ to + '&customer1='+ customer;
                 $.ajax({
-                      url: ".form.attr(Url::home(true) . '/transaction/fil').",
-                      type: 'post',
-                      data: form.serialize(),
-                      success: function (response) {
-                           // do something with response
-                      }
-                 });
-                 return false;
+                        type: 'POST',
+                        url: '".Url::home(true) . '/transaction/index'."',
+                        data: dataString,
+                        cache: false,
+                        success: function(data){
+                             $('#mytable').html($(data).find('.table-responsive').html());
+                          
+
+                        }
+                });
             }
 
         });
