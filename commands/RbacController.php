@@ -16,37 +16,41 @@ class RbacController extends Controller
                 
                 //Buat permission untuk city
                 //index
-                $index              = $auth->createPermission('transaction/index');
-                $index->description = 'Create a index';
-                $auth->add($index);
+                // $index              = $auth->createPermission('transaction/index');
+                // $index->description = 'Create a index';
+                // $auth->add($index);
 
-                $create     = $auth->createPermission('transaction/create');
-                $create->description = 'Create a transaction';
-                $auth->add($create);
+                // $create     = $auth->createPermission('transaction/create');
+                // $create->description = 'Create a transaction';
+                // $auth->add($create);
 
-                $view     = $auth->createPermission('transaction/view');        
-                $view->description = 'view a transaction';
-                $auth->add($view);
+                // $view     = $auth->createPermission('transaction/view');        
+                // $view->description = 'view a transaction';
+                // $auth->add($view);
 
-                $update     = $auth->createPermission('transaction/update');        
-                $update->description = 'Update a transaction';
-                $auth->add($update);
+                // $update     = $auth->createPermission('transaction/update');        
+                // $update->description = 'Update a transaction';
+                // $auth->add($update);
 
-                $delete     = $auth->createPermission('transaction/delete');        
-                $delete->description = 'Delete a transaction';
-                $auth->add($delete);
+                // $delete     = $auth->createPermission('transaction/delete');        
+                // $delete->description = 'Delete a transaction';
+                // $auth->add($delete);
 
-                $excel     = $auth->createPermission('transaction/excel');        
-                $excel->description = 'Print All Data transaction';
-                $auth->add($excel);
+                // $excel     = $auth->createPermission('transaction/excel');        
+                // $excel->description = 'Print All Data transaction';
+                // $auth->add($excel);
 
-                $cetak     = $auth->createPermission('transaction/cetak');        
-                $cetak->description = 'Print Data Record transaction';
-                $auth->add($cetak);
+                // $cetak     = $auth->createPermission('transaction/cetak');        
+                // $cetak->description = 'Print Data Record transaction';
+                // $auth->add($cetak);
 
-                $filter     = $auth->createPermission('transaction/filter');        
-                $filter->description = 'Print Data Filter transaction';
-                $auth->add($filter);
+                // $filter     = $auth->createPermission('transaction/filter');        
+                // $filter->description = 'Print Data Filter transaction';
+                // $auth->add($filter);
+
+                $sigup     = $auth->createPermission('site/sigup');        
+                $sigup->description = 'Tambah Author';
+                $auth->add($sigup);
 
 
                 //Buat Rulles..
