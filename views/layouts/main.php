@@ -55,6 +55,7 @@ AppAsset::register($this);
                  ['label' => 'Transaction', 'url' => ['/transaction']],
             ],
         ],
+        ['label' => 'Create Account', 'url' => ['/site/sigup']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (

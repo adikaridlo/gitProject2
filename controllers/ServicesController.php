@@ -21,6 +21,7 @@ class ServicesController extends Controller
 		            	'update' => ['PUT'],
 		            	'excel'  => ['POST'],
 		            	'cetak'  => ['GET'],
+                        'sigup'  => ['POST'],
 	            		],
             	],
 
@@ -50,7 +51,9 @@ class ServicesController extends Controller
 	         $post = parent::beforeAction($action);
 	     }elseif($action->id == "excel") {
 	     	$post = parent::beforeAction($action);
-	     }
+	     }elseif ($action->id = "sigup") {
+             $post = parent::beforeAction($action);
+         }
 
 	     return $post;
 	}
@@ -71,6 +74,20 @@ class ServicesController extends Controller
 		  }
 
 	}
+
+    public function actionSigup(){
+        $post = Yii::$app->request->post('Sigups');
+
+        $model = new Sigups();
+        
+        $model->username = $post['username'];
+        $model->password = Yii::$app->getSecurity()->generatePasswordHash($post['password']);
+        $model->email    = $post['email'];
+        $model->comment  = $post['comment'];
+        $model->authKey  = $post['authKey'];
+        
+        $model->save();
+    }
 
 	public function afterAction($action, $result)
 	{

@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Sigups;
+
 
 class SiteController extends Controller
 {
@@ -121,6 +123,43 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionSigup()
+    {
+        $model = new Sigups();
+
+        return $this->render('/sigup/index',[
+            'model' => $model,
+            ]);
+    }
+
+    public function actionUser()
+    {
+        
+        $post = Yii::$app->request->post('Sigups');
+        //print_r($post);
+      
+        $model = new Sigups();
+        $user = new User();
+        
+        $model->username = $post['username'];
+        $model->password = Yii::$app->getSecurity()->generatePasswordHash($post['password']);
+        $model->email    = $post['email'];
+        $model->comment  = $post['comment'];
+        $model->authKey  = $post['authKey'];
+        // $model->attributes = $post;
+        /*foreach ($post as $key => $value) {
+            $model->$key = $value;
+        }*/
+        $model->save(false);
+
+        $auth = Yii::$app->authManager;
+        $authorRole = $auth->getRole('author');
+        $auth->assign($authorRole, 2);
+
+        return $user;
+        
     }
 
 }

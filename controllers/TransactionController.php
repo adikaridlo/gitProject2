@@ -14,6 +14,8 @@ use app\models\TransaksiForm;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\web\ForbiddenHttpException;
+use yii\filters\AccessControl;
 // use yii\widgets\ActiveForm;
 // use yii\web\Response;
 
@@ -27,18 +29,42 @@ class TransactionController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['GET'],
-                ],
-            ],
-            [
-              'class' => 'yii\filters\ContentNegotiator',
-              'only' => ['index','update', 'excel', 'cetak','filter','create','fil','validasiform'],
-            ],
-        ];
+        // return [
+        //     'verbs' => [
+        //         'class' => VerbFilter::className(),
+        //         'actions' => [
+        //             'delete' => ['GET'],
+        //         ],
+        //     ],
+        //     [
+        //       'class' => 'yii\filters\ContentNegotiator',
+        //       'only' => ['index','update', 'excel', 'cetak','filter','create','fil','validasiform'],
+        //     ],
+        // ];
+      $behaviors['access'] = [
+             'class' => AccessControl::className(),
+             'rules' => [
+                 [
+                         'allow' => true,
+                         'roles' => ['@'],
+                         'matchCallback' => function ($rule, $action) {
+                        
+                        $module             = Yii::$app->controller->module->id; 
+                        $action             = Yii::$app->controller->action->id;
+                        $controller         = Yii::$app->controller->id;
+                        $route                     = "$controller/$action";
+                        $post = Yii::$app->request->post();
+                        if (\Yii::$app->user->can($route)) {
+                             return true;
+                        }
+                        }
+                 ],
+             ],
+           ];
+
+ 
+
+        return $behaviors;
     }
 
   public function beforeAction($action)
@@ -300,15 +326,20 @@ class TransactionController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Transaction();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+          $model = new Transaction();
+
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+              return $this->redirect(['view', 'id' => $model->id]);
+
+          } else {
+
+              return $this->render('create', [
+                  'model' => $model,
+              ]);
+          }
+        
     }
 
     /**
