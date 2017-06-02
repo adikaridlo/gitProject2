@@ -21,14 +21,6 @@ class CityController extends Controller
      */
     public function behaviors()
     {
-        // return [
-        //     'verbs' => [
-        //         'class' => VerbFilter::className(),
-        //         'actions' => [
-        //             'delete' => ['POST'],
-        //         ],
-        //     ],
-        // ];
 
         $behaviors['access'] = [
              'class' => AccessControl::className(),

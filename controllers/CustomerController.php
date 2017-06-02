@@ -13,6 +13,7 @@ use kartik\depdrop\DepDrop;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\filters\AccessControl;
 
 
 /**
@@ -25,14 +26,31 @@ class CustomerController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
+
+        $behaviors['access'] = [
+             'class' => AccessControl::className(),
+             'rules' => [
+                 [
+                         'allow' => true,
+                         'roles' => ['@'],
+                         'matchCallback' => function ($rule, $action) {
+                        
+                        $module             = Yii::$app->controller->module->id; 
+                        $action             = Yii::$app->controller->action->id;
+                        $controller         = Yii::$app->controller->id;
+                        $route                     = "$controller/$action";
+                        $post = Yii::$app->request->post();
+                        if (\Yii::$app->user->can($route)) {
+                             return true;
+                        }
+                        }
+                 ],
+             ],
+           ];
+
+ 
+
+        return $behaviors;
     }
 
     /**
@@ -41,27 +59,17 @@ class CustomerController extends Controller
      */
     public function actionIndex()
     {
-        // $searchModel = new CustomerSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        // $dataProvider->pagination = [
-        //     'pageSize' => 2
-        // ];
-        // return $this->render('index', [
-        //     'searchModel' => $searchModel,
-        //     'dataProvider' => $dataProvider,
-        // ]);
 
         $model = new CustomerForm();
+
         if($model->load(yii::$app->request->post()) && $model->validate()){
-            // Jalankan Filter.....
+
             $nama = Html::encode($model->nama);
             $negara = Html::encode($model->negara);
             $kota = Html::encode($model->kota);
             echo $nama;
             echo $negara;
             echo $kota;
-
-            // Filter .............
 
             $query = Customer::find()
                     ->joinWith('country')
@@ -71,14 +79,18 @@ class CustomerController extends Controller
                     ->andwhere(['customer.city_id' => $kota])
                     ->andwhere(['status' => 'YES'])
                     ->orderBy(['customer.id' => SORT_ASC]);
+
             $countQuery = clone $query;
+
             $pages = new Pagination([
                 'defaultPageSize' => 3,
                 'totalCount' => $countQuery->count()]);
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
+
             $CustomerForm = new CustomerForm();
+
             return $this->render('index',[
                 'models' => $models,
                  'pages' => $pages,
@@ -87,19 +99,24 @@ class CustomerController extends Controller
                 ]);
             
         }else{
-            // Mentahan...
+
             $query = Customer::find()
                 ->joinWith('country')
                 ->joinWith('city')
                 ->where(['status' => 'YES']);
+
             $countQuery = clone $query;
+
             $pages = new Pagination([
                 'defaultPageSize' =>3,
                 'totalCount' => $countQuery->count()]);
+
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
+
             $CustomerForm = new CustomerForm();
+
             return $this->render('index', [
                  'models' => $models,
                  'pages' => $pages,
@@ -154,16 +171,11 @@ class CustomerController extends Controller
                     'model' => $model,
                 ]);
         }
-
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // } else {
-        //     return $this->render('create', [
-        //         'model' => $model,
-        //     ]);
-        // }
         
     }
+
+
+
     public function actionValidation($id){
 
         $model = $this->findModel($id);
@@ -171,6 +183,7 @@ class CustomerController extends Controller
         $status = Customer::findOne($id);
         $status->status = "YES";
         $status->save();
+
         return $this->redirect(['view', 'id' => $model->id]);
     }
 
@@ -185,11 +198,15 @@ class CustomerController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
+
         } else {
+
             return $this->render('update', [
                 'model' => $model,
             ]);
+            
         }
     }
 

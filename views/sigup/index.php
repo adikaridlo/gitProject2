@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 
 <div class="col-md-6">
 
-	<?php $form = ActiveForm::begin(['action' => ['/site/user'],'method' => 'post']); ?>
+	<?php $form = ActiveForm::begin(['action' => ['/sigup/user'],'method' => 'post']); ?>
 
 	<?= $form->field($model, 'username')->textInput()->input('', ['placeholder' => "Masukkan username baru"] )?>
 	<?= $form->field($model, 'password')->textInput()->input('password', ['placeholder' => "Masukkan Password baru"] )?>

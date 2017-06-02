@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Sigups;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
+use app\models\LoginForm;
 
 /**
  * CityController implements the CRUD actions for City model.
@@ -19,14 +22,6 @@ class SigupController extends Controller
      */
     public function behaviors()
     {
-        // return [
-        //     'verbs' => [
-        //         'class' => VerbFilter::className(),
-        //         'actions' => [
-        //             'delete' => ['POST'],
-        //         ],
-        //     ],
-        // ];
 
         $behaviors['access'] = [
              'class' => AccessControl::className(),
@@ -67,27 +62,28 @@ class SigupController extends Controller
     {
         
         $post = Yii::$app->request->post('Sigups');
-        //print_r($post);
-      
+
         $model = new Sigups();
-        $user = new User();
         
         $model->username = $post['username'];
         $model->password = Yii::$app->getSecurity()->generatePasswordHash($post['password']);
         $model->email    = $post['email'];
         $model->comment  = $post['comment'];
         $model->authKey  = $post['authKey'];
-        // $model->attributes = $post;
-        /*foreach ($post as $key => $value) {
-            $model->$key = $value;
-        }*/
-        $model->save(false);
 
-        $auth = Yii::$app->authManager;
-        $authorRole = $auth->getRole('author');
-        $auth->assign($authorRole, 2);
+        if ($model->save())
+        {
 
-        return $user;
+            $user = new User();
+
+            $auth = Yii::$app->authManager;
+            $authorRole = $auth->getRole('author');
+            $auth->assign($authorRole, $model->id);
+            
+            return $this->render('/site/index',[
+            'model' => $model,
+            ]);
+        }
         
     }
 }

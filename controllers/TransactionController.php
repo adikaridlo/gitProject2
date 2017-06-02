@@ -29,18 +29,7 @@ class TransactionController extends Controller
      */
     public function behaviors()
     {
-        // return [
-        //     'verbs' => [
-        //         'class' => VerbFilter::className(),
-        //         'actions' => [
-        //             'delete' => ['GET'],
-        //         ],
-        //     ],
-        //     [
-        //       'class' => 'yii\filters\ContentNegotiator',
-        //       'only' => ['index','update', 'excel', 'cetak','filter','create','fil','validasiform'],
-        //     ],
-        // ];
+
       $behaviors['access'] = [
              'class' => AccessControl::className(),
              'rules' => [
@@ -62,20 +51,20 @@ class TransactionController extends Controller
              ],
            ];
 
- 
-
         return $behaviors;
     }
 
   public function beforeAction($action)
   {
 
-    if($action->id == "index"){
+    if($action->id == "index")
+    {
         $model = new TransaksiForm();
         $transDate = Html::encode($model->transdate);
         $toDate = Html::encode($model->todate);
 
-        if ($transDate != NULL ) {
+        if ($transDate != NULL ) 
+        {
             $todateMessage = "Tidak Boleh Kosong";
             return $this->render('index', [
                  'models' => $models,
@@ -84,21 +73,39 @@ class TransactionController extends Controller
                  'filter' => $filter,
             ]);
         }
+
+
+       $post = parent::beforeAction($action);
+
+       }elseif($action->id == "update")
+       {
+
         $post = parent::beforeAction($action);
-       }elseif($action->id == "update") {
-        $post = parent::beforeAction($action);
+
        }elseif($action->id == "excel") {
+
         $post = parent::beforeAction($action);
+
        }elseif($action->id == "cetak") {
+
         $post = parent::beforeAction($action);
+
        }elseif($action->id == "filter") {
+
         $post = parent::beforeAction($action);
+
        }elseif($action->id == "create") {
+
         $post = parent::beforeAction($action);
+
        }elseif($action->id == "fil") {
+
         $post = parent::beforeAction($action);
+
        }elseif($action->id == "validasiform") {
+
         $post = parent::beforeAction($action);
+
        }
 
        return $post;
@@ -114,47 +121,31 @@ class TransactionController extends Controller
      */
     public function actionIndex()
     {
-      // $From ="";
-      // $to="";
-      // $custom="";
-      // $From=$_POST['From'];
-      // echo $From;
-      // $to=$_POST['to'];
-      // echo $to;
-      // $custom=$_POST['customer'];
-      // echo $custom;
-        
-
-        // if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-        //     Yii::$app->response->format = Response::FORMAT_JSON;
-        //     return ActiveForm::validate($model);
-        // }
-        // $model = new TransaksiForm();
         $post = Yii::$app->request->post();
-        // if($model->load(yii::$app->request->post()) && $model->validate()){
-            // Jalankan Filter.....
+
         if ($post != NULL) {
+
            $post = Yii::$app->request->post();
 
-        
-           // return print_r($post['From1']);
               $transDate = $post['From1'];
               $toDate    = $post['to1'];
               $ID        = $post['customer1'];
 
-            // echo $ID;
             $query = Transaction::find()
                     ->joinWith('customer')
                     ->Where(['between','trans_date',$transDate,$toDate])
                     ->orwhere(['transaction.customer_id' => $ID])
                     ->orderBy(['transaction.id' => SORT_ASC]);
             $countQuery = clone $query;
+
             $pages = new Pagination([
                 'defaultPageSize' => 20,
                 'totalCount' => $countQuery->count()]);
+
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
+
             $transaksiForm = new TransaksiForm();
 
             $filter = "YES";
@@ -167,7 +158,7 @@ class TransactionController extends Controller
                     ->all();
            
         }else{
-            // Mentahan...
+
             $query = Transaction::find()
                 ->joinWith('customer');
 
@@ -194,106 +185,46 @@ class TransactionController extends Controller
                  'datacetak' => $datacetak,
                 ]);
 
-        // $transdate = Yii::$app->request->post('transdate');
-        // $todate = Yii::$app->request->post('todate');
-        // $customer = Yii::$app->request->post('customer');
-        // if ($transdate != NULL) {
-        //     // Jalankan Filter.....
-        //     // $transDate = Html::encode($model->transdate);
-        //     // $toDate = Html::encode($model->todate);
-        //     // $ID = Html::encode($model->customer);
-        //     // echo $ID;
-
-          
-        //     $query = Transaction::find()
-        //             ->joinWith('customer')
-        //             ->Where(['between','trans_date',$transdate,$todate])
-        //             ->orwhere(['transaction.customer_id' => $customer])
-        //             ->orderBy(['transaction.id' => SORT_ASC]);
-        //     $countQuery = clone $query;
-        //     $pages = new Pagination([
-        //         'defaultPageSize' => 3,
-        //         'totalCount' => $countQuery->count()]);
-        //     $models = $query->offset($pages->offset)
-        //         ->limit($pages->limit)
-        //         ->all();
-        //     $transaksiForm = new TransaksiForm();
-
-        //     $filter = "YES";
-
-        //     $datacetak = Transaction::find()
-        //             ->joinWith('customer')
-        //             ->Where(['between','trans_date',$transdate,$todate])
-        //             ->orwhere(['transaction.customer_id' => $customer])
-        //             ->orderBy(['transaction.id' => SORT_ASC])
-        //             ->all();
-        //     return $this->render('index',[
-        //          'models' => $models,
-        //          'pages' => $pages,
-        //          'transaksiForm' => $transaksiForm,
-        //          'filter' => $filter,
-        //          'datacetak' => $datacetak,
-        //         ]);
-        // }else{
-        //     // Mentahan...
-        //     $query = Transaction::find()
-        //         ->joinWith('customer');
-
-        //     $countQuery = clone $query;
-
-        //     $pages = new Pagination([
-        //         'defaultPageSize' =>3,
-        //         'totalCount' => $countQuery->count()]);
-
-        //     $models = $query->offset($pages->offset)
-        //         ->limit($pages->limit)
-        //         ->all();
-                
-        //     $transaksiForm = new TransaksiForm();
-        //     $message = "";
-        //     $datacetak = NULL;
-        //     $filter = "NO";
-        //     return $this->render('index', [
-        //          'models' => $models,
-        //          'pages' => $pages,
-        //          'transaksiForm' => $transaksiForm,
-        //          'filter' => $filter,
-        //          'datacetak' => $datacetak,
-        //     ]);
-        // }
-        
     }
 
+
+
     public function actionFil(){
+
         $post = Yii::$app->request->post();
         
         return print_r($post);
-      $From ="";
-      $to="";
-      $custom="";
-      $From=$_POST['From1'];
-      echo $From;
-      $to=$_POST['to1'];
-      echo $to;
-      $custom=$_POST['customer1'];
-      echo $custom;
 
-      $transdate = Yii::$app->request->post('transdate');
-      $todate = Yii::$app->request->post('todate');
-      $customer = Yii::$app->request->post('customer');
+        $From ="";
+        $to="";
+        $custom="";
+        $From=$_POST['From1'];
+        echo $From;
+        $to=$_POST['to1'];
+        echo $to;
+        $custom=$_POST['customer1'];
+        echo $custom;
+
+        $transdate = Yii::$app->request->post('transdate');
+        $todate = Yii::$app->request->post('todate');
+        $customer = Yii::$app->request->post('customer');
 
       $query = Transaction::find()
                     ->joinWith('customer')
                     ->orWhere(['between','trans_date',$From,$to])
                     ->orwhere(['transaction.customer_id' => $customer])
                     ->orderBy(['transaction.id' => SORT_ASC]);
+
             $countQuery = clone $query;
+
             $pages = new Pagination([
                 'defaultPageSize' => 3,
                 'totalCount' => $countQuery->count()]);
+
             $models = $query->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();
+
             $transaksiForm = new TransaksiForm();
 
             $filter = "YES";
@@ -409,41 +340,13 @@ class TransactionController extends Controller
                     ->all();
         return $this->render('tampilkan',['query' => $query]);
     }
-    // public function actionFilterdate()
-    // {
-    //     $model = new TransaksiForm();
-    //     if ($model->load(yii::$app->request->post()) && $model->validate()) {
-    //         $transDate = Html::encode($model->transdate);
-    //         $toDate = Html::encode($model->todate);
-            
-    //         $models = Transaction::find()
-    //                 ->joinWith('customer')
-    //                 ->where(['between','trans_date',$transDate,$toDate])->all();
-    //         // $countQuery = clone $query;
-    //         // $pages = new Pagination([
-    //         //     'defaultPageSize' => 3,
-    //         //     'totalCount' => $countQuery->count()]);
-    //         // $models = $query->offset($pages->offset)
-    //         //     ->limit($pages->limit)
-    //         //     ->all();
-    //         $transaksiForm = new TransaksiForm();
-    //         // return $this->render('index', [
-    //         //      'models' => $models,
-    //         //      'pages' => $pages,
-    //         //      'transaksiForm' => $transaksiForm,
-    //         // ]);
-    //         return $this->render('tampilkan',[
-    //             'models' => $models,
-    //             //  'pages' => $pages,
-    //             // 'models'=> $models,
-    //             'transaksiForm' => $transaksiForm,
-    //             ]);
-    //     }
-    // }
+
+
 
     public function actionExcel()
     {
         $objPHPExcel = new \PHPExcel();
+
         $data = Transaction::find()
                 ->joinWith('customer')
                 ->all();
@@ -494,6 +397,7 @@ class TransactionController extends Controller
   public function actionCetak($id)
     {
         $objPHPExcel = new \PHPExcel();
+
         $data = Transaction::find()
                 ->joinWith('customer')
                 ->Where(['transaction.id' => $id])
@@ -546,22 +450,11 @@ class TransactionController extends Controller
     {
 
       foreach($data as $cetak):
-        // echo "<br>";
-        // var_dump($cetak);
-        // echo "<br>".$cetak['jurnal_no'];
-        // echo "<br>".$cetak['customer'];
-        // echo "<br>".$cetak['trans_name'];
-        // echo "<br>".$cetak['type'];
-        // echo "<br>".$cetak['biaya'];
-        // echo "<br>".$cetak['trans_date'];
 
         endforeach;
      
         $objPHPExcel = new \PHPExcel();
-        // $data = Transaction::find()
-        //         ->joinWith('customer')
-        //         ->Where(['transaction.customer_id' => $id])
-        //         ->all();
+        
 
                 $sheet=0;
                   
