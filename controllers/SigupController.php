@@ -58,6 +58,15 @@ class SigupController extends Controller
             ]);
     }
 
+    public function actionCode()
+    {
+        $model = new Sigups();
+
+        return $this->render('/sigup/code',[
+            'model' => $model,
+            ]);
+    }
+
     public function actionUser()
     {
         

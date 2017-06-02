@@ -16,7 +16,7 @@ class RbacController extends Controller
                 
                 //Buat permission untuk city
                 //index
-                
+
                 // Country
                 $index              = $auth->createPermission('country/index');
                 $index->description = 'Create a index';
@@ -92,7 +92,7 @@ class RbacController extends Controller
                 $filter->description = 'Print Data Filter transaction';
                 $auth->add($filter);
 
-                $sigup     = $auth->createPermission('site/sigup');        
+                $sigup     = $auth->createPermission('sigup/sigup');        
                 $sigup->description = 'Tambah Author';
                 $auth->add($sigup);
 
@@ -124,7 +124,7 @@ class RbacController extends Controller
                 $excel  = $auth->createPermission('transaction/excel');
                 $cetak  = $auth->createPermission('transaction/cetak');
                 $filter = $auth->createPermission('transaction/filter');
-                $sigup  = $auth->createPermission('site/sigup');
+                $sigup  = $auth->createPermission('sigup/sigup');
 
                 // Author....
                 $author = $auth->createRole('author');
