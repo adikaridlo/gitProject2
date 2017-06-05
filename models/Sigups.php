@@ -17,7 +17,8 @@ class Sigups extends \yii\db\ActiveRecord
 	public function rules(){
 
 		return[
-			[['username', 'password', 'email', 'comment', 'authKey'], 'required'],
+			[['username', 'password', 'email'], 'required'],
+            [['comment', 'authKey'], 'string'],
 			[['id'], 'integer'],
 		];
 	}
@@ -44,6 +45,13 @@ class Sigups extends \yii\db\ActiveRecord
         }else{
             return false;
         }
+    }
+
+    public static function generatePasswordHash($password)
+    {
+        $password = Yii::$app->getSecurity()->generatePasswordHash($password);
+
+        return $password;
     }
 
 	

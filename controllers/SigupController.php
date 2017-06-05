@@ -75,16 +75,13 @@ class SigupController extends Controller
         $model = new Sigups();
         
         $model->username = $post['username'];
-        $model->password = Yii::$app->getSecurity()->generatePasswordHash($post['password']);
+        $model->password = Sigups::generatePasswordHash($post['password']);
         $model->email    = $post['email'];
         $model->comment  = $post['comment'];
         $model->authKey  = $post['authKey'];
 
         if ($model->save())
         {
-
-            $user = new User();
-
             $auth = Yii::$app->authManager;
             $authorRole = $auth->getRole('author');
             $auth->assign($authorRole, $model->id);
