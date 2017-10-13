@@ -25,7 +25,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/waves-effect.js',
         // 'js/wow.min.js',
-        //'js/jQuery.js',
+        // 'js/jQuery.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

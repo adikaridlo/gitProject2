@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Customer;
+use app\models\City;
 use app\models\CustomerForm;
 use app\models\CustomerSearch;
 use yii\web\Controller;
@@ -254,5 +255,22 @@ public function actionSubcat() {
         echo Json::encode(['output' => '', 'selected' => '']);
     }
 
- 
+ public function actionLists($id)
+    {
+        // echo $id;exit;
+        $countCity = City::find()
+                    ->where(['country_id'=>$id])
+                    ->count();
+        $citys = City::find()
+                    ->where(['country_id'=>$id])
+                    ->all();
+        if ($countCity > 0) {
+            foreach ($citys as $city) {
+                echo "<option value='".$city->id."'>".$city->name."</option>";
+            }
+        }else{
+                echo "<option>Not Found</option>";
+        }        
+
+    }
 }

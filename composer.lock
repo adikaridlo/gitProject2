@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aea10ef6afb31ac172384c2c9533c5d7",
+    "content-hash": "0caf8c023d54cb5006fe38fef6874718",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -482,6 +482,43 @@
                 "yii2"
             ],
             "time": "2017-01-10T19:21:40+00:00"
+        },
+        {
+            "name": "develandoo/yii2-push-notification",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Develandoo/yii2-push-notification.git",
+                "reference": "af4f3c950a2a42c73aea33796e140fbb8fe37a4b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Develandoo/yii2-push-notification/zipball/af4f3c950a2a42c73aea33796e140fbb8fe37a4b",
+                "reference": "af4f3c950a2a42c73aea33796e140fbb8fe37a4b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "develandoo\\notification\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Yii2 apns/gcm push notification",
+            "homepage": "https://github.com/develandoo/yii2-push-notification",
+            "keywords": [
+                "develandoo",
+                "notification",
+                "push",
+                "yii2"
+            ],
+            "time": "2017-03-29T10:47:23+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

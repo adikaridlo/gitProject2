@@ -143,22 +143,4 @@ class CityController extends Controller
         }
     }
 
-    public function actionLists($id)
-    {
-        echo $id;
-        $countCity = City::find()
-                    ->where(['country_id'=>$id])
-                    ->count();
-        $citys = City::find()
-                    ->where(['country_id'=>$id])
-                    ->all();
-        if ($countCity > 0) {
-            foreach ($citys as $city) {
-                echo "<option value='".$city->id."'>".$city->name."</option>";
-            }
-        }else{
-                echo "<option>Not Found</option>";
-        }        
-
-    }
 }

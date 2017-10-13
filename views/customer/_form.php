@@ -7,6 +7,7 @@ use app\models\Country;
 use app\models\City;
 use yii\widgets\Pjax;
 use dosamigos\datepicker\DatePicker;
+use yii\helpers\Url;
 
 
 
@@ -32,11 +33,10 @@ use dosamigos\datepicker\DatePicker;
  <?= $form->field($model, 'country_id')->dropDownList(
         ArrayHelper::map(Country::find()->all(), 'id','name'),
         [
-            'prompt'=>'Select Country',
-            'onchange'=>'
-                $.post( "http://filter.com/city/lists?id='.'"+$(this).val(), function( data ){
-                    $( "select#customer-city_id" ).html(data);
-                });'
+        'prompt'=>'Select Province',
+                'onchange' => "$.post('".Url::home(true).'customer/lists?id='."'+$(this).val(), function( data ){
+                        $( 'select#customer-city_id' ).html(data);
+                    });"
         ]);?>
 
 <?= $form->field($model, 'city_id')->dropDownList(
